@@ -16,7 +16,7 @@ public class ItextDemo {
 		try {
 			PdfReader pdfTemplate = new PdfReader(pdfTemplateFile);
 			FileOutputStream out = new FileOutputStream(
-					String.format("target/a-%s.pdf", new SimpleDateFormat("HH-mm-ss").format(new Date())));
+					String.format("target/a-%s.pdf", new SimpleDateFormat("dd-HH-mm-ss").format(new Date())));
 			PdfStamper stamper = new PdfStamper(pdfTemplate, out);
 			AcroFields fields = stamper.getAcroFields();
 
