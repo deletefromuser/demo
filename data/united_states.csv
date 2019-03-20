@@ -1,0 +1,20 @@
+name;abbr;capital;most populous city;population;square miles;time zone 1;time zone 2;dst
+ALABAMA;AL;Montgomery;Birmingham;4,708,708;52,423;CST (UTC-6);EST (UTC-5);YES
+ALASKA;AK;Juneau;Anchorage;698,473;656,425;AKST (UTC-09) ;HST (UTC-10) ;YES
+ARIZONA;AZ;Phoenix;Phoenix;6,595,778;114,006;MT (UTC-07); ;NO
+ARKANSAS;AR;Little Rock;Little Rock;2,889,450;53,182;CST (UTC-6); ;YES
+CALIFORNIA;CA;Sacramento;Los Angeles;36,961,664;163,707;PT (UTC-8); ;YES
+COLORADO;CO;Denver;Denver;5,024,748;104,100;MT (UTC-07); ;YES
+CONNECTICUT;CT;Hartford;Bridgeport;3,518,288;5,544;EST (UTC-5); ;YES
+DELAWARE;DE;Dover;Wilmington;885,122;1,954;EST (UTC-5); ;YES
+FLORIDA;FL;Tallahassee;Jacksonville;18,537,969;65,758;EST (UTC-5);CST (UTC-6);YES
+GEORGIA;GA;Atlanta;Atlanta;9,829,211;59,441;EST (UTC-5); ;YES
+HAWAII;HI;Honolulu;Honolulu;1,295,178;10,932;HST (UTC-10) ; ;NO
+IDAHO;ID;Boise;Boise;1,545,801;83,574;MT (UTC-07);PT (UTC-8);YES
+ILLINOIS;IL;Springfield;Chicago;12,910,409;57,918;CST (UTC-6); ;YES
+INDIANA;IN;Indianapolis;Indianapolis;6,423,113;36,420;EST (UTC-5);CST (UTC-6);YES
+IOWA;IA;Des Moines;Des Moines;3,007,856;56,276;CST (UTC-6); ;YES
+KANSAS;KS;Topeka;Wichita;2,818,747;82,282;CST (UTC-6);MT (UTC-07);YES
+KENTUCKY;KY;Frankfort;Louisville;4,314,113;40,411;EST (UTC-5);CST (UTC-6);YES
+LOUISIANA;LA;Baton Rouge;New Orleans;4,492,076;51,843;CST (UTC-6); ;YES
+MAINE;ME;Augusta;Portland;1,318,301;35,387;EST (UTC-5); ;YES

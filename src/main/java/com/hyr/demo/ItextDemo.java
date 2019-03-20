@@ -12,7 +12,8 @@ import com.lowagie.text.pdf.PdfStamper;
 public class ItextDemo {
 	public static void main(String[] args) {
 		System.out.println("--start--");
-		String pdfTemplateFile = "data/temp.pdf";
+//		String pdfTemplateFile = "data/temp.pdf";
+		String pdfTemplateFile = "data/fragment.pdf";
 		try {
 			PdfReader pdfTemplate = new PdfReader(pdfTemplateFile);
 			FileOutputStream out = new FileOutputStream(
