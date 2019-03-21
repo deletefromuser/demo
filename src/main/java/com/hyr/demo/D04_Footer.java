@@ -7,9 +7,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.security.KeyStore.Entry;
 import java.security.KeyStore.TrustedCertificateEntry;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import com.lowagie.text.BadElementException;
@@ -29,6 +31,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class D04_Footer {
@@ -55,6 +58,12 @@ public class D04_Footer {
 
 		BaseFont baseFont;
 		Font ffont;
+		// 模板
+		public PdfTemplate total;
+
+		public void onOpenDocument(PdfWriter writer, Document document) {
+			total = writer.getDirectContent().createTemplate(50, 50);// 共 页 的矩形的长宽高
+		}
 
 		public void onEndPage(PdfWriter writer, Document document) {
 			PdfContentByte cb = writer.getDirectContent();
@@ -74,6 +83,9 @@ public class D04_Footer {
 				fields.addSubstitutionFont(baseFont);
 				fields.setField("page.number", "page" + writer.getPageNumber());
 				fields.setField("label", "保険");
+				PdfContentByte totalt = stamper.getOverContent(1);
+				totalt.addTemplate(total, fields.getFieldPositions("page.count")[1],
+						fields.getFieldPositions("page.count")[4]);
 				stamper.setFormFlattening(true);
 				stamper.close();
 				reader.close();
@@ -103,11 +115,38 @@ public class D04_Footer {
 				e.printStackTrace();
 			}
 		}
+
+		/**
+		 *
+		 * TODO 关闭文档时，替换模板，完成整个页眉页脚组件
+		 *
+		 */
+		public void onCloseDocument(PdfWriter writer, Document document) {
+			// 7.最后一步了，就是关闭文档的时候，将模板替换成实际的 Y 值,至此，page x of y 制作完毕，完美兼容各种文档size。
+			total.beginText();
+			BaseFont baseFont = null;
+			try {
+				baseFont = BaseFont.createFont("data/msmincho.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+			} catch (DocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			total.setFontAndSize(baseFont, 15f);// 生成的模版的字体、颜色
+			String foot2 = " " + (writer.getPageNumber()) + " 页";
+			total.showText(foot2);// 模版显示的内容
+			total.endText();
+			total.closePath();
+		}
 	}
 
 	public void manipulatePdf2(String src, String dest) throws DocumentException, IOException {
 		Document document = new Document();
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dest));
+//		ByteArrayOutputStream tempDest = new ByteArrayOutputStream();
+//		PdfWriter writer = PdfWriter.getInstance(document, tempDest);
 
 		BaseFont baseFont = BaseFont.createFont("data/msmincho.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 //		HeaderFooter foot = new HeaderFooter(new Phrase("-", new Font(baseFont)), new Phrase("-", new Font(baseFont)));
@@ -168,12 +207,21 @@ public class D04_Footer {
 			document.add(Image.getInstance(footer));
 		}
 		br.close();
-//        reader = new PdfReader("resources/pdfs/footer.pdf");
-//        PdfImportedPage footer = writer.getImportedPage(reader, 1);
-//        cell = new PdfPCell(Image.getInstance(footer));
-//        cell.setColspan(3);
-//        table.addCell(cell);
-//		document.add(table);
+
+		int count = writer.getPageNumber();
+
 		document.close();
+
+//		reader = new PdfReader(tempDest.toByteArray());
+//		stamper = new PdfStamper(reader, new FileOutputStream(dest + "3.pdf"));
+//		fields = stamper.getAcroFields();
+//		Set fs = fields.getFields().keySet();
+//		for(Object str : fs) {
+//			System.out.println(str);
+//		}
+//		fields.setField("page.count", count + "");
+//		stamper.close();
+//		reader.close();
+
 	}
 }
