@@ -21,6 +21,7 @@ import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.BaseFont;
@@ -83,24 +84,28 @@ public class D04_Footer {
 				fields.addSubstitutionFont(baseFont);
 				fields.setField("page.number", "page" + writer.getPageNumber());
 				fields.setField("label", "保険");
-				PdfContentByte totalt = stamper.getOverContent(1);
-				totalt.addTemplate(total, fields.getFieldPositions("page.count")[1],
-						fields.getFieldPositions("page.count")[4]);
+				PdfContentByte totalt = stamper.getUnderContent(1);
+				float[] bs = fields.getFieldPositions("page.count");
+//				totalt.addTemplate(total, 10, document.top());
 				stamper.setFormFlattening(true);
 				stamper.close();
 				reader.close();
 
 				reader = new PdfReader(baos.toByteArray());
-//				PdfReader reader = new PdfReader("data/footer.pdf");
 				PdfImportedPage header = writer.getImportedPage(reader, 1);
 				Image i = Image.getInstance(header);
 				// set footer
-				i.setAbsolutePosition(10, 10);
-				cb.addImage(i);
+//				i.setAbsolutePosition(10, 10);
+//				cb.addImage(i);
+				cb.addTemplate(header, 10, 10);
+				float x = (document.rightMargin() + document.right() + document.leftMargin() - document.left()) / 2.0F
+						+ 20F;
+				float y = document.bottom() - 20;
+				cb.addTemplate(total, bs[1] + 5, bs[4] - 5);
 
 				// set header
-				i.setAbsolutePosition(10, document.top());
-				cb.addImage(i);
+//				i.setAbsolutePosition(10, document.top());
+//				cb.addImage(i);
 			} catch (BadElementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -134,8 +139,8 @@ public class D04_Footer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			total.setFontAndSize(baseFont, 15f);// 生成的模版的字体、颜色
-			String foot2 = " " + (writer.getPageNumber()) + " 页";
+			total.setFontAndSize(baseFont, 15);// 生成的模版的字体、颜色
+			String foot2 = " " + (writer.getPageNumber() - 1) + " page";
 			total.showText(foot2);// 模版显示的内容
 			total.endText();
 			total.closePath();
@@ -143,7 +148,8 @@ public class D04_Footer {
 	}
 
 	public void manipulatePdf2(String src, String dest) throws DocumentException, IOException {
-		Document document = new Document();
+		Document document = new Document(PageSize.A4);
+		printDocProperties(document);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dest));
 //		ByteArrayOutputStream tempDest = new ByteArrayOutputStream();
 //		PdfWriter writer = PdfWriter.getInstance(document, tempDest);
@@ -205,6 +211,7 @@ public class D04_Footer {
 //			table.addCell(cell);
 //			reader.close();
 			document.add(Image.getInstance(footer));
+//			writer.getDirectContent().addTemplate(arg0, arg1, arg2);
 		}
 		br.close();
 
@@ -223,5 +230,18 @@ public class D04_Footer {
 //		stamper.close();
 //		reader.close();
 
+	}
+
+	void printDocProperties(Document doc) {
+		System.out.println("---doc properties---");
+		System.out.println("   page size: " + doc.getPageSize().toString());
+		System.out.println("   margin left: " + doc.leftMargin());
+		System.out.println("   margin right: " + doc.rightMargin());
+		System.out.println("   margin top: " + doc.topMargin());
+		System.out.println("   margin bottom: " + doc.bottomMargin());
+		System.out.println("   left: " + doc.left());
+		System.out.println("   right: " + doc.right());
+		System.out.println("   top: " + doc.top());
+		System.out.println("   bottom: " + doc.bottom());
 	}
 }
