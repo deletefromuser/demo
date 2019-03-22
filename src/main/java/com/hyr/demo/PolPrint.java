@@ -57,12 +57,12 @@ public class PolPrint {
 
 	class MyFooter extends PdfPageEventHelper {
 		public MyFooter() throws DocumentException, IOException {
-			baseFont = BaseFont.createFont("data/msmincho.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-			ffont = new Font(baseFont, 15, Font.ITALIC);
+			baseFont = BaseFont.createFont("data/meiryo.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//			ffont = new Font(baseFont, 15, Font.ITALIC);
 		}
 
 		BaseFont baseFont;
-		Font ffont;
+//		Font ffont;
 		// 模板
 		public PdfTemplate total;
 
@@ -99,8 +99,8 @@ public class PolPrint {
 
 				reader = new PdfReader(baos.toByteArray());
 				PdfImportedPage footer = writer.getImportedPage(reader, 1);
-				cb.addTemplate(footer, 10, 10);
-				cb.addTemplate(total, bs[1] + 10, bs[4] - 2);
+				cb.addTemplate(footer, 0, 10);
+				cb.addTemplate(total, bs[1] + 0, bs[4] - 2);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -117,7 +117,7 @@ public class PolPrint {
 			total.beginText();
 			BaseFont baseFont = null;
 			try {
-				baseFont = BaseFont.createFont("data/meiryo.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+				baseFont = BaseFont.createFont("data/meiryo.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -135,7 +135,7 @@ public class PolPrint {
 		printDocProperties(document);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dest));
 
-		BaseFont baseFont = BaseFont.createFont("data/msmincho.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		BaseFont baseFont = BaseFont.createFont("data/meiryo.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED); // msmincho
 //		HeaderFooter foot = new HeaderFooter(new Phrase("-", new Font(baseFont)), new Phrase("-", new Font(baseFont)));
 //		foot.setAlignment(2);
 //		document.setFooter(foot);
