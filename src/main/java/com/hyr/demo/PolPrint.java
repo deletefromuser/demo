@@ -43,6 +43,7 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PolPrint {
 
 	public static final String HEADER = "data/pol/polHeader.pdf";
+	public static final String DESP = "data/pol/polDesp.pdf";
 	public static final String POL_TEMP = "data/pol/polFragment.pdf";
 	public static final String FOOTER = "data/pol/polFooter.pdf";
 	public static final String DEST = "target/a-result-pol.pdf";
@@ -58,24 +59,71 @@ public class PolPrint {
 	class MyFooter extends PdfPageEventHelper {
 		public MyFooter() throws DocumentException, IOException {
 			baseFont = BaseFont.createFont("data/meiryo.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//			ffont = new Font(baseFont, 15, Font.ITALIC);
 		}
 
 		BaseFont baseFont;
-//		Font ffont;
+
 		// 模板
 		public PdfTemplate total;
+		public PdfTemplate header;
 
 		public void onOpenDocument(PdfWriter writer, Document document) {
 			total = writer.getDirectContent().createTemplate(26.7f, 17.04f);// 共 页 的矩形的长宽高
+			header = writer.getDirectContent().createTemplate(document.right(), 50);
+		}
+
+		@Override
+		public void onStartPage(PdfWriter writer, Document document) {
+//			if (document.getPageNumber() != 1) {
+//				return;
+//			}
+			try {
+//				ByteArrayOutputStream baos;
+//				PdfReader reader;
+//				PdfStamper stamper;
+//				baos = new ByteArrayOutputStream();
+//				reader = new PdfReader(HEADER);
+//				stamper = new PdfStamper(reader, baos);
+//				stamper.close();
+//				reader.close();
+//				// Footer
+//				reader = new PdfReader(baos.toByteArray());
+//				PdfImportedPage header = writer.getImportedPage(reader, 1);
+//				document.add(Image.getInstance(header));
+
+				PdfContentByte cb = writer.getDirectContent();
+				PdfReader reader = new PdfReader(HEADER);
+				PdfImportedPage header = writer.getImportedPage(reader, 1);
+				Image headerImage = Image.getInstance(header);
+//				headerImage.setAbsolutePosition(50, document.top() - 50);
+//				cb.addTemplate(footer, 0, document.top());
+//				cb.addImage(headerImage);
+				document.add(headerImage);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 
 		public void onEndPage(PdfWriter writer, Document document) {
 			PdfContentByte cb = writer.getDirectContent();
 			try {
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				PdfReader reader = new PdfReader(FOOTER);
+				ByteArrayOutputStream baos;
+				PdfReader reader;
 				PdfStamper stamper;
+				baos = new ByteArrayOutputStream();
+				// Header
+				reader = new PdfReader(HEADER);
+//				stamper = new PdfStamper(reader, baos);
+				PdfImportedPage header = writer.getImportedPage(reader, 1);
+//				cb.addTemplate(header, 0, document.top() - 50);
+//				document.add(Image.getInstance(header));
+//				reader = new PdfReader(baos.toByteArray());
+//				PdfImportedPage header = writer.getImportedPage(reader, 1);
+//				cb.addTemplate(header, 0, document.top()-20);
+
+				// Footer
+				baos = new ByteArrayOutputStream();
+				reader = new PdfReader(FOOTER);
 				AcroFields fields;
 				stamper = new PdfStamper(reader, baos);
 				fields = stamper.getAcroFields();
@@ -102,6 +150,8 @@ public class PolPrint {
 				cb.addTemplate(footer, 0, 10);
 				cb.addTemplate(total, bs[1] + 0, bs[4] - 2);
 
+//				cb.addTemplate(header, 0, document.top() - 50);
+				reader.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -136,9 +186,6 @@ public class PolPrint {
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dest));
 
 		BaseFont baseFont = BaseFont.createFont("data/meiryo.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED); // msmincho
-//		HeaderFooter foot = new HeaderFooter(new Phrase("-", new Font(baseFont)), new Phrase("-", new Font(baseFont)));
-//		foot.setAlignment(2);
-//		document.setFooter(foot);
 
 		writer.setPageEvent(new MyFooter());
 		document.open();
@@ -148,9 +195,9 @@ public class PolPrint {
 		PdfStamper stamper;
 		AcroFields fields;
 
-		// Header
+		// Desp Contents
 		baos = new ByteArrayOutputStream();
-		reader = new PdfReader(HEADER);
+		reader = new PdfReader(DESP);
 		stamper = new PdfStamper(reader, baos);
 		fields = stamper.getAcroFields();
 
@@ -173,11 +220,14 @@ public class PolPrint {
 		reader.close();
 
 		reader = new PdfReader(baos.toByteArray());
-		PdfImportedPage header = writer.getImportedPage(reader, 1);
-		document.add(Image.getInstance(header));
+		PdfImportedPage desp = writer.getImportedPage(reader, 1);
+		Image stepImage = Image.getInstance(desp);
+//		System.out.println(stepImage.getAbsoluteX() + "|" + stepImage.getAbsoluteY());
+		document.add(stepImage);
 
 //		 Fragment
 		ArrayList<PolData> pols = getPols();
+		int i = 1;
 		for (PolData inDto : pols) {
 			// create a PDF in memory
 			baos = new ByteArrayOutputStream();
@@ -231,6 +281,11 @@ public class PolPrint {
 			reader = new PdfReader(baos.toByteArray());
 			PdfImportedPage footer = writer.getImportedPage(reader, 1);
 			document.add(Image.getInstance(footer));
+
+			// Header
+			if ((i++ + 1) % 3 == 0) {
+				document.newPage();
+			}
 		}
 
 		document.close();
