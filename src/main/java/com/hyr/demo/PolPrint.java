@@ -74,30 +74,11 @@ public class PolPrint {
 
 		@Override
 		public void onStartPage(PdfWriter writer, Document document) {
-//			if (document.getPageNumber() != 1) {
-//				return;
-//			}
 			try {
-//				ByteArrayOutputStream baos;
-//				PdfReader reader;
-//				PdfStamper stamper;
-//				baos = new ByteArrayOutputStream();
-//				reader = new PdfReader(HEADER);
-//				stamper = new PdfStamper(reader, baos);
-//				stamper.close();
-//				reader.close();
-//				// Footer
-//				reader = new PdfReader(baos.toByteArray());
-//				PdfImportedPage header = writer.getImportedPage(reader, 1);
-//				document.add(Image.getInstance(header));
-
 				PdfContentByte cb = writer.getDirectContent();
 				PdfReader reader = new PdfReader(HEADER);
 				PdfImportedPage header = writer.getImportedPage(reader, 1);
 				Image headerImage = Image.getInstance(header);
-//				headerImage.setAbsolutePosition(50, document.top() - 50);
-//				cb.addTemplate(footer, 0, document.top());
-//				cb.addImage(headerImage);
 				document.add(headerImage);
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -110,16 +91,6 @@ public class PolPrint {
 				ByteArrayOutputStream baos;
 				PdfReader reader;
 				PdfStamper stamper;
-				baos = new ByteArrayOutputStream();
-				// Header
-				reader = new PdfReader(HEADER);
-//				stamper = new PdfStamper(reader, baos);
-				PdfImportedPage header = writer.getImportedPage(reader, 1);
-//				cb.addTemplate(header, 0, document.top() - 50);
-//				document.add(Image.getInstance(header));
-//				reader = new PdfReader(baos.toByteArray());
-//				PdfImportedPage header = writer.getImportedPage(reader, 1);
-//				cb.addTemplate(header, 0, document.top()-20);
 
 				// Footer
 				baos = new ByteArrayOutputStream();
@@ -139,7 +110,6 @@ public class PolPrint {
 
 				fields.addSubstitutionFont(baseFont);
 				fields.setField("page.number", "" + writer.getPageNumber());
-//				float[] bs1 = fields.getFieldPositions("page.number");
 				float[] bs = fields.getFieldPositions("page.count");
 				stamper.setFormFlattening(true);
 				stamper.close();
@@ -150,7 +120,6 @@ public class PolPrint {
 				cb.addTemplate(footer, 0, 10);
 				cb.addTemplate(total, bs[1] + 0, bs[4] - 2);
 
-//				cb.addTemplate(header, 0, document.top() - 50);
 				reader.close();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -169,7 +138,6 @@ public class PolPrint {
 			try {
 				baseFont = BaseFont.createFont("data/meiryo.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			total.setFontAndSize(baseFont, 11);// 生成的模版的字体、颜色
@@ -308,7 +276,7 @@ public class PolPrint {
 		ArrayList<PolData> list = new ArrayList<>();
 		int i = 1;
 
-		for (i = 1; i < 7; i++) {
+		for (i = 1; i < 70; i++) {
 			PolData newpd = new PolData();
 
 			newpd.setPol("p123456789" + String.valueOf(i));
