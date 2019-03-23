@@ -47,6 +47,8 @@ public class PolPrint {
 	public static final String POL_TEMP = "data/pol/polFragment.pdf";
 	public static final String FOOTER = "data/pol/polFooter.pdf";
 	public static final String DEST = "target/a-result-pol.pdf";
+	
+	float pageHeight = 0;
 
 	public static void main(String[] args) throws IOException, DocumentException {
 		System.out.println("--start--");
@@ -58,7 +60,7 @@ public class PolPrint {
 
 	class MyFooter extends PdfPageEventHelper {
 		public MyFooter() throws DocumentException, IOException {
-			baseFont = BaseFont.createFont("data/meiryo.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+			baseFont = BaseFont.createFont("data/meiryo.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		}
 
 		BaseFont baseFont;
@@ -75,11 +77,13 @@ public class PolPrint {
 		@Override
 		public void onStartPage(PdfWriter writer, Document document) {
 		    // Header
+		    System.out.println("Header  :");
 			try {
 				PdfContentByte cb = writer.getDirectContent();
 				PdfReader reader = new PdfReader(HEADER);
 				PdfImportedPage header = writer.getImportedPage(reader, 1);
 				Image headerImage = Image.getInstance(header);
+				pageHeight += headerImage.getHeight();
 				document.add(headerImage);
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -153,6 +157,9 @@ public class PolPrint {
 		Document document = new Document(PageSize.A4, 0, 0, 0, 0);
 		printDocProperties(document);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dest));
+		
+		float docHeight = document.top();
+		
 
 		BaseFont baseFont = BaseFont.createFont("data/meiryo.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED); // msmincho
 
@@ -170,7 +177,7 @@ public class PolPrint {
 		stamper = new PdfStamper(reader, baos);
 		fields = stamper.getAcroFields();
 
-		System.out.println("Header  :");
+		System.out.println("Desp Contents  :");
 		for (Object obj : fields.getFields().entrySet()) {
 			@SuppressWarnings("unchecked")
 			Map.Entry<String, Item> entry = (Map.Entry<String, Item>) obj;
@@ -191,7 +198,7 @@ public class PolPrint {
 		reader = new PdfReader(baos.toByteArray());
 		PdfImportedPage desp = writer.getImportedPage(reader, 1);
 		Image stepImage = Image.getInstance(desp);
-//		System.out.println(stepImage.getAbsoluteX() + "|" + stepImage.getAbsoluteY());
+		pageHeight += stepImage.getHeight();
 		document.add(stepImage);
 
 //		 Fragment
@@ -204,14 +211,7 @@ public class PolPrint {
 			stamper = new PdfStamper(reader, baos);
 			fields = stamper.getAcroFields();
 
-			System.out.println("Fragment  :");
-			for (Object obj : fields.getFields().entrySet()) {
-				@SuppressWarnings("unchecked")
-				Map.Entry<String, Item> entry = (Map.Entry<String, Item>) obj;
-				// 获得块名
-				String fieldName = entry.getKey();
-				System.out.println("  -" + fieldName);
-			}
+			
 
 			fields.addSubstitutionFont(baseFont);
 
@@ -248,13 +248,32 @@ public class PolPrint {
 			reader.close();
 
 			reader = new PdfReader(baos.toByteArray());
-			PdfImportedPage footer = writer.getImportedPage(reader, 1);
-			document.add(Image.getInstance(footer));
-
-			// trigger the onStartPage event, that is what i called clumsy
-			if ((i++ + 1) % 3 == 0) {
-				document.newPage();
+			PdfImportedPage fragment = writer.getImportedPage(reader, 1);
+			Image fragmentImage = Image.getInstance(fragment);
+			
+			if(stepImage.getHeight() > docHeight - pageHeight) {
+			    document.newPage();
+			    pageHeight = fragmentImage.getHeight();
+			} else {
+			    pageHeight += fragmentImage.getHeight();
 			}
+			
+			System.out.println("Fragment  : -" + i);
+            for (Object obj : fields.getFields().entrySet()) {
+                @SuppressWarnings("unchecked")
+                Map.Entry<String, Item> entry = (Map.Entry<String, Item>) obj;
+                // 获得块名
+                String fieldName = entry.getKey();
+//                System.out.println("  -" + fieldName);
+            }
+			
+			document.add(fragmentImage);
+
+//			System.out.println("document is " + document.top());
+//			System.out.println("pageHeight is " + pageHeight);
+//			System.out.println("not use height is " + (document.top() - pageHeight));
+//			System.out.println("fragment height is " + fragmentImage.getHeight());
+			i++;
 		}
 
 		document.close();
@@ -277,7 +296,7 @@ public class PolPrint {
 		ArrayList<PolData> list = new ArrayList<>();
 		int i = 1;
 
-		for (i = 1; i < 70; i++) {
+		for (i = 1; i < 7; i++) {
 			PolData newpd = new PolData();
 
 			newpd.setPol("p123456789" + String.valueOf(i));
