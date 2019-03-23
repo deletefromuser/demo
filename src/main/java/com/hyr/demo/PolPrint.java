@@ -203,15 +203,12 @@ public class PolPrint {
 
 //		 Fragment
 		ArrayList<PolData> pols = getPols();
-		int i = 1;
 		for (PolData inDto : pols) {
 			// create a PDF in memory
 			baos = new ByteArrayOutputStream();
 			reader = new PdfReader(POL_TEMP);
 			stamper = new PdfStamper(reader, baos);
 			fields = stamper.getAcroFields();
-
-			
 
 			fields.addSubstitutionFont(baseFont);
 
@@ -258,22 +255,16 @@ public class PolPrint {
 			    pageHeight += fragmentImage.getHeight();
 			}
 			
-			System.out.println("Fragment  : -" + i);
+			System.out.println("Fragment  :");
             for (Object obj : fields.getFields().entrySet()) {
                 @SuppressWarnings("unchecked")
                 Map.Entry<String, Item> entry = (Map.Entry<String, Item>) obj;
                 // 获得块名
                 String fieldName = entry.getKey();
-//                System.out.println("  -" + fieldName);
+                System.out.println("  -" + fieldName);
             }
 			
 			document.add(fragmentImage);
-
-//			System.out.println("document is " + document.top());
-//			System.out.println("pageHeight is " + pageHeight);
-//			System.out.println("not use height is " + (document.top() - pageHeight));
-//			System.out.println("fragment height is " + fragmentImage.getHeight());
-			i++;
 		}
 
 		document.close();
