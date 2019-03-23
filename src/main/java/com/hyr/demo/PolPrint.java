@@ -74,6 +74,7 @@ public class PolPrint {
 
 		@Override
 		public void onStartPage(PdfWriter writer, Document document) {
+		    // Header
 			try {
 				PdfContentByte cb = writer.getDirectContent();
 				PdfReader reader = new PdfReader(HEADER);
@@ -250,7 +251,7 @@ public class PolPrint {
 			PdfImportedPage footer = writer.getImportedPage(reader, 1);
 			document.add(Image.getInstance(footer));
 
-			// Header
+			// trigger the onStartPage event, that is what i called clumsy
 			if ((i++ + 1) % 3 == 0) {
 				document.newPage();
 			}
