@@ -1,0 +1,6 @@
+C:\tool\workspace\demo\lib\bctsp-jdk14-1.38.jar
+C:\tool\workspace\demo\lib\itext-2.1.7.jar
+C:\tool\workspace\demo\lib\bcmail-jdk14-1.38.jar
+C:\tool\workspace\demo\lib\bcmail-jdk14-138.jar
+C:\tool\workspace\demo\lib\bcprov-jdk14-1.38.jar
+C:\tool\workspace\demo\lib\bcprov-jdk14-138.jar
