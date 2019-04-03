@@ -19,44 +19,6 @@ public class ItextDemo {
 		System.out.println("--start--");
 //		String pdfTemplateFile = "data/New_Blank_Document.pdf";
 		String pdfTemplateFile = "data/polDesp.pdf";
-//		try {
-//			PdfReader pdfTemplate = new PdfReader(pdfTemplateFile);
-//			FileOutputStream out = new FileOutputStream(
-//					String.format("target/a-%s.pdf", new SimpleDateFormat("dd-HH-mm-ss").format(new Date())));
-//			PdfStamper stamper = new PdfStamper(pdfTemplate, out);
-//			AcroFields fields = stamper.getAcroFields();
-//
-//			BaseFont baseFont = BaseFont.createFont("data/msgothic.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-////			BaseFont baseFont = BaseFont.createFont("data/meiryob.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//			fields.addSubstitutionFont(baseFont);
-//			for (Entry<String, Item> map : fields.getFields().entrySet()) {
-//				fields.setFieldProperty(map.getKey(), "textfont", baseFont, null);
-//			}
-//			fields.setField("name", "Windows 田中　太郎ＰP123");
-////			fields.setFieldProperty("sex", "textfont", baseFont, null);
-//			fields.setField("sex", "男性");
-////			fields.setFieldProperty("age", "textfont", baseFont, null);
-//			fields.setField("age", "35歳");
-////			fields.setFieldProperty("text", "textfont", baseFont, null);
-//			fields.setField("text", "35歳");
-//
-//			fields.setField("Name", "Raf Hens男性");
-//			fields.setField("Company", "iText Software35歳");
-//			fields.setField("Country", "BELGIUM35歳获取保单域（ AcroFields ）");
-//
-//			stamper.setFormFlattening(true);
-//
-//			stamper.close();
-//			pdfTemplate.close();
-//
-//			//
-////			Thread.sleep(1000);
-////			fillTableDatas();
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		} finally {
-//			System.out.println("--end--");
-//		}
 
 		try {
 			// Initialize PDF document
@@ -67,24 +29,7 @@ public class ItextDemo {
 
 			PdfFont baseFont = PdfFontFactory.createFont("data/msgothic.ttc,1", "Identity-H", false);
 //		BaseFont baseFont = BaseFont.createFont("data/meiryob.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//			fields.addSubstitutionFont(baseFont);
-//			for (Map.Entry<String, PdfFormField> map : fields) {
-//				fields.setFieldProperty(map.getKey(), "textfont", baseFont, null);
-//			}
-//			fields.setField("name", "Windows 田中　太郎ＰP123");
-////		fields.setFieldProperty("sex", "textfont", baseFont, null);
-//			fields.setField("sex", "男性");
-////		fields.setFieldProperty("age", "textfont", baseFont, null);
-//			fields.setField("age", "35歳");
-////		fields.setFieldProperty("text", "textfont", baseFont, null);
-//			fields.setField("text", "35歳");
-//
-//			fields.setField("Name", "Raf Hens男性");
-//			fields.setField("Company", "iText Software35歳");
-//			fields.setField("Country", "BELGIUM35歳获取保单域（ AcroFields ）");
 
-			// 处理中文问题
-//			PdfFont font = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
 			int i = 0;
 			java.util.Iterator<String> it = fields.keySet().iterator();
 			while (it.hasNext()) {

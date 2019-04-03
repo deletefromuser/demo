@@ -16,6 +16,24 @@
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.itextpdf/itext7-core -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.itextpdf</groupId> -->
+		<!-- <artifactId>kernel</artifactId> -->
+		<!-- <version>7.1.5</version> -->
+		<!-- <type>pom</type> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.itextpdf</groupId> -->
+		<!-- <artifactId>io</artifactId> -->
+		<!-- <version>7.1.5</version> -->
+		<!-- <type>pom</type> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.itextpdf</groupId> -->
+		<!-- <artifactId>forms</artifactId> -->
+		<!-- <version>7.1.5</version> -->
+		<!-- <type>pom</type> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext7-core</artifactId>
@@ -23,12 +41,14 @@
 			<type>pom</type>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.itextpdf/itext-asian -->
+		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
 		<dependency>
-			<groupId>com.itextpdf</groupId>
-			<artifactId>itext-asian</artifactId>
-			<version>5.2.0</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
