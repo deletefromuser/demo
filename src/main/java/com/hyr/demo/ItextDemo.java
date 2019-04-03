@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import com.itextpdf.text.pdf.AcroFields;
@@ -24,9 +25,13 @@ public class ItextDemo {
 			PdfStamper stamper = new PdfStamper(pdfTemplate, out);
 			AcroFields fields = stamper.getAcroFields();
 
-			BaseFont baseFont = BaseFont.createFont("data/msmincho.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+			BaseFont baseFont = BaseFont.createFont("data/msgothic.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//			BaseFont baseFont = BaseFont.createFont("data/meiryob.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 			fields.addSubstitutionFont(baseFont);
-			fields.setField("name", "Daniel Reuter");
+			for (Entry<String, Item> map : fields.getFields().entrySet()) {
+				fields.setFieldProperty(map.getKey(), "textfont", baseFont, null);
+			}
+			fields.setField("name", "Windows 田中　太郎ＰP123");
 //			fields.setFieldProperty("sex", "textfont", baseFont, null);
 			fields.setField("sex", "男性");
 //			fields.setFieldProperty("age", "textfont", baseFont, null);
