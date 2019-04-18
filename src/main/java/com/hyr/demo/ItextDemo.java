@@ -35,6 +35,7 @@ public class ItextDemo {
 			while (it.hasNext()) {
 				// 获取文本域名称
 				String name = it.next().toString();
+				fields.get(name).setFont(baseFont);
 				switch (i++) {
 				case 0:
 
@@ -50,7 +51,7 @@ public class ItextDemo {
 					fields.get(name).setValue("Windows 田中　太郎ＰP123男性");
 					break;
 				}
-				fields.get(name).setFont(baseFont);
+				
 			}
 			form.flattenFields();// 设置表单域不可编辑
 			pdf.close();
