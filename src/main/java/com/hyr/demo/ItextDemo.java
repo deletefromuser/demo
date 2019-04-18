@@ -23,7 +23,7 @@ public class ItextDemo {
 		try {
 			// Initialize PDF document
 			PdfDocument pdf = new PdfDocument(new PdfReader(pdfTemplateFile), new PdfWriter(
-					String.format("target/a-%s.pdf", new SimpleDateFormat("dd-HH-mm-ss").format(new Date()))));
+					String.format("target/a-%s.pdf", "itext7")));
 			PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
 			Map<String, PdfFormField> fields = form.getFormFields();
 
